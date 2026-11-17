@@ -59,9 +59,6 @@ if ($u['rol'] === 'admin') {
         <section class="tarjeta">
           <div class="tarjeta-titulo"><h3>Correos de aviso</h3></div>
           <p class="muy-tenue">Cada aviso se muestra en la plataforma y también se envía por correo. Si un envío falla, queda pendiente.</p>
-          <?php if (!SMTP_HABILITADO): ?>
-            <div class="aviso aviso-alerta"><?= icono('alerta') ?><span>El correo todavía no está configurado. Completá los datos SMTP en config/config.php.</span></div>
-          <?php endif; ?>
           <form method="post"><?= csrf_campo() ?><input type="hidden" name="accion" value="enviar_correos">
             <button class="btn btn-sec btn-bloque" type="submit" <?= $c['correos_pend'] ? '' : 'disabled' ?>><?= icono('enviar') ?>Enviar correos pendientes (<?= $c['correos_pend'] ?>)</button></form>
         </section>

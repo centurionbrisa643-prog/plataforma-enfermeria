@@ -33,7 +33,7 @@ function enviar_correos_pendientes(int $limite = 50): array
     $pendientesTotal = fn() => (int)q('SELECT COUNT(*) FROM notificaciones
                                         WHERE NOT correo_enviado AND intentos_correo < 5')->fetchColumn();
     if (!SMTP_HABILITADO) {
-        return ['enviados' => 0, 'pendientes' => $pendientesTotal(), 'error' => 'El envío de correos todavía no está configurado (config.php).'];
+        return ['enviados' => 0, 'pendientes' => $pendientesTotal(), 'error' => null];
     }
 
     $lote = q('SELECT n.id, n.titulo, n.mensaje, n.enlace, u.email, u.nombre, u.apellido
