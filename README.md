@@ -6,6 +6,12 @@ Funciona en computadora y celular, con **modo claro y oscuro**.
 
 > Proyecto integrador · Ingeniería Informática · Universidad del Norte · Grupo 04
 
+## ▶ [Probar la app](https://centurionbrisa643-prog.github.io/plataforma-enfermeria/)
+
+**https://centurionbrisa643-prog.github.io/plataforma-enfermeria/**
+
+Se abre en el navegador, en computadora o celular, sin instalar nada. En la pantalla de ingreso hay botones con las **cuentas de prueba** (administrador y estudiantes). Es una versión de demostración: los cambios se guardan solo en el navegador de cada persona y se pueden reiniciar con "Reiniciar datos". La versión completa, con PostgreSQL y envío de correos, se instala como se explica más abajo.
+
 ![Panel de Coordinación](docs/capturas/escritorio-admin.png)
 
 | Celular | Libreta en modo oscuro |
