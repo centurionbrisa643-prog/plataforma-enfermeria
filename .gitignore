@@ -1,0 +1,5 @@
+storage/documentos/*.pdf
+.vscode/
+*.log
+diagnostico.txt
+link-*.txt
