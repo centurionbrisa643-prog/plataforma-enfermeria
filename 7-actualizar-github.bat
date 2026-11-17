@@ -5,7 +5,7 @@ cd /d "%~dp0"
 set "LOG=%~dp0github.log"
 echo === ACTUALIZAR %date% %time% === >> "%LOG%"
 git add -A >> "%LOG%" 2>&1
-git commit -m "Version funcional completa: README actualizado, capturas y scripts de Windows" >> "%LOG%" 2>&1
+git commit -m "Actualizacion de la plataforma" >> "%LOG%" 2>&1
 git -c credential.helper= -c credential.helper=manager push origin main >> "%LOG%" 2>&1
 if errorlevel 1 (
   echo ERROR_PUSH >> "%LOG%"

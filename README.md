@@ -10,7 +10,9 @@ Funciona en computadora y celular, con **modo claro y oscuro**.
 
 **https://centurionbrisa643-prog.github.io/plataforma-enfermeria/**
 
-Se abre en el navegador, en computadora o celular, sin instalar nada. En la pantalla de ingreso hay botones con las **cuentas de prueba** (administrador y estudiantes). Es una versión de demostración: los cambios se guardan solo en el navegador de cada persona y se pueden reiniciar con "Reiniciar datos". La versión completa, con PostgreSQL y envío de correos, se instala como se explica más abajo.
+Se abre en el navegador, en computadora o celular, sin instalar nada. Para ingresar, usá los [usuarios de prueba](#usuarios-de-prueba).
+
+En esta versión web los datos se guardan en el navegador de cada persona; la versión con PostgreSQL y envío de correos se instala como se explica más abajo.
 
 ![Panel de Coordinación](docs/capturas/escritorio-admin.png)
 
@@ -138,7 +140,7 @@ plataforma-enfermeria/
 ├── calendario.php  documentos.php  notificaciones.php  perfil.php
 ├── storage/documentos/        ← PDFs subidos (no accesibles directamente)
 ├── tareas/enviar_correos.php  ← reintento de correos
-├── docs/capturas/             ← imágenes de este README
+├── docs/                      ← versión demo para GitHub Pages y capturas
 ├── router.php                 ← servidor de desarrollo de PHP
 └── *.bat                      ← arranque rápido en Windows
 ```

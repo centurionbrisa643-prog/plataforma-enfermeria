@@ -96,7 +96,7 @@ function layout_inicio(string $titulo, string $activo = '', array $opc = []): vo
     <?php if (!empty($opc['saludo'])): ?>
       <div class="saludo">
         <div class="avatar avatar-grande"><?= e(iniciales($u['nombre'], $u['apellido'])) ?></div>
-        <div><h1>¡Hola, <?= e($u['nombre']) ?>! 👋</h1>
+        <div><h1><?= e($u['nombre'] . ' ' . $u['apellido']) ?></h1>
           <p><?= e($u['rol'] === 'admin' ? ($u['cargo'] ?: 'Administrador') : 'Estudiante de Enfermería') ?></p></div>
       </div>
     <?php else: ?>

@@ -245,7 +245,7 @@
     ids.forEach(function (id) {
       DB.notificaciones.push({ id: nuevoId(DB.notificaciones), usuario: id, titulo: titulo, mensaje: mensaje, enlace: enlace || null, leida: false, fecha: ahoraISO() });
     });
-    return ' Se notificó en la plataforma a ' + ids.length + ' estudiante(s); el correo se envía en la versión completa.';
+    return ' Se notificó a ' + ids.length + ' estudiante(s).';
   }
 
   // ------------------------------------------------------------------
@@ -278,9 +278,6 @@
       ['calendario', 'Calendario', 'calendario', '#/calendario'], ['documentos', 'Documentos', 'documento', '#/documentos'],
       ['perfil', 'Perfil', 'usuario', '#/perfil']];
   }
-  function banda() {
-    return '<div class="demo-banda">Versión de demostración: los cambios se guardan solo en este navegador. <button type="button" data-reiniciar>Reiniciar datos</button></div>';
-  }
   function layout(titulo, activo, cuerpo, opc) {
     opc = opc || {};
     var u = yo(), n = sinLeer(u.id);
@@ -294,7 +291,7 @@
       return '<a href="' + m[3] + '" class="' + (m[0] === activo ? 'activo' : '') + '">' + ico(m[2]) + '<span>' + m[1] + '</span></a>';
     }).join('');
     var cabecera = opc.saludo
-      ? '<div class="saludo"><div class="avatar avatar-grande">' + e(iniciales(u.nombre, u.apellido)) + '</div><div><h1>¡Hola, ' + e(u.nombre) + '! 👋</h1><p>' + e(cargo) + '</p></div></div>'
+      ? '<div class="saludo"><div class="avatar avatar-grande">' + e(iniciales(u.nombre, u.apellido)) + '</div><div><h1>' + e(u.nombre + ' ' + u.apellido) + '</h1><p>' + e(cargo) + '</p></div></div>'
       : (opc.volver ? '<a class="btn-icono solo-movil" href="' + opc.volver + '" aria-label="Volver">' + ico('flecha_izq') + '</a>' : '') + '<h1 class="barra-titulo">' + e(titulo) + '</h1>';
     var fl = avisos.map(function (a) {
       return '<div class="aviso aviso-' + a.tipo + '" role="status">' + ico(a.tipo === 'error' ? 'alerta' : 'check_circulo') + '<span>' + e(a.msg) + '</span></div>';
@@ -307,7 +304,7 @@
       '<span><strong>Libreta de Prácticas</strong><small>Enfermería · UniNorte</small></span></a><nav class="lateral-nav">' + lat + '</nav>' +
       '<div class="lateral-pie"><div class="avatar">' + e(iniciales(u.nombre, u.apellido)) + '</div><div class="lateral-usuario"><strong>' + e(u.nombre + ' ' + u.apellido) + '</strong><small>' + e(cargo) + '</small></div>' +
       '<button class="btn-icono" type="button" data-salir title="Cerrar sesión" aria-label="Cerrar sesión">' + ico('salir') + '</button></div></aside>' +
-      '<div class="marco">' + banda() + '<header class="barra ' + (opc.saludo ? 'barra-saludo' : '') + '">' + cabecera +
+      '<div class="marco"><header class="barra ' + (opc.saludo ? 'barra-saludo' : '') + '">' + cabecera +
       '<div class="barra-acciones">' + botonTema() + '<a class="btn-icono campana" href="#/notificaciones" aria-label="Notificaciones">' + ico('campana') + (n ? '<b class="punto">' + (n > 9 ? '9+' : n) + '</b>' : '') + '</a>' +
       '<button class="btn-icono solo-movil" type="button" data-salir aria-label="Cerrar sesión">' + ico('salir') + '</button></div></header>' +
       '<main id="contenido" class="contenido">' + fl + cuerpo + '</main></div>' +
@@ -345,15 +342,7 @@
     document.body.className = 'sin-lateral';
     var err = avisos.map(function (a) { return '<div class="aviso aviso-' + a.tipo + '" role="alert">' + ico('alerta') + '<span>' + e(a.msg) + '</span></div>'; }).join('');
     avisos = [];
-    var cuentas = [
-      ['coordinacion@enfermeria.test', 'Admin2026!', 'Coordinación de Prácticas', 'Administrador'],
-      ['direccion@enfermeria.test', 'Admin2026!', 'Dirección de Carrera', 'Administrador'],
-      ['ana.benitez@enfermeria.test', 'Estudiante2026!', 'Ana Benítez', 'Estudiante · 3.º semestre'],
-      ['luis.gimenez@enfermeria.test', 'Estudiante2026!', 'Luis Giménez', 'Estudiante · 1.º semestre, sin DENERS']
-    ].map(function (c) {
-      return '<button type="button" class="cuenta-demo" data-cuenta="' + c[0] + '|' + c[1] + '"><div class="avatar">' + e(iniciales(c[2].split(' ')[0], c[2].split(' ')[1] || '')) + '</div><span><strong>' + e(c[2]) + '</strong><small class="muy-tenue">' + e(c[3]) + '</small></span></button>';
-    }).join('');
-    return banda() + '<div class="ingreso"><section class="ingreso-arte">' + botonTema('ingreso-tema') +
+    return '<div class="ingreso"><section class="ingreso-arte">' + botonTema('ingreso-tema') +
       '<div class="latido">' + ico('pulso') + '</div><div class="ingreso-logo"><img src="assets/logo-enfermeria.png" alt="Logo oficial de la Carrera de Enfermería, Universidad del Norte"></div>' +
       '<h1>Libreta de Prácticas</h1><span class="pildora">Enfermería</span><p>Plataforma académica de la Carrera de Enfermería · Universidad del Norte</p>' +
       '<svg class="ondas" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 64c180 40 360 56 540 40S900 24 1080 24s300 32 360 48v48H0z"/></svg></section>' +
@@ -363,7 +352,7 @@
       '<div class="campo"><label for="clave">Contraseña</label><div class="input-icono">' + ico('candado') +
       '<input id="clave" name="clave" type="password" autocomplete="current-password" required placeholder="••••••••"></div></div>' +
       '<button class="btn btn-bloque" type="submit">Iniciar sesión</button></form>' +
-      '<p class="muy-tenue" style="margin:18px 0 0">Cuentas de prueba (tocá una para completar los datos):</p><div class="cuentas-demo">' + cuentas + '</div></div></section></div>';
+      '<p class="muy-tenue" style="margin-top:18px;text-align:center">¿Olvidaste tu contraseña o no tenés cuenta?<br>Solicitala a la Coordinación de Prácticas.</p></div></section></div>';
   };
 
   V.inicio = function () {
@@ -546,7 +535,7 @@
         '<div class="form-fila"><div class="campo"><label for="da">Área <small>(opcional)</small></label><input id="da" name="area" type="text" value="' + e(v.area || '') + '"></div>' +
         '<div class="campo"><label for="dv">Versión</label><input id="dv" name="version" type="text" value="' + e(v.version) + '"></div></div>' +
         '<div class="campo"><label for="dd">Descripción</label><textarea id="dd" name="descripcion" rows="3">' + e(v.descripcion || '') + '</textarea></div>' +
-        '<div class="campo"><label for="da2">Archivo PDF <small>(en la demo, hasta 2 MB)</small></label><input id="da2" name="archivo" type="file" accept="application/pdf"></div>' +
+        '<div class="campo"><label for="da2">Archivo PDF <small>(hasta 2 MB)</small></label><input id="da2" name="archivo" type="file" accept="application/pdf"></div>' +
         '<label class="casilla"><input type="checkbox" name="publicado" value="1"' + (v.publicado ? ' checked' : '') + '> Visible para estudiantes</label>' +
         '<label class="casilla"><input type="checkbox" name="notificar" value="1"> Avisar a los estudiantes si se sube un archivo</label>' +
         '<div class="acciones" style="margin-top:8px"><button class="btn" type="submit">' + ico('check') + 'Guardar</button>' + (ed ? '<a class="btn btn-suave" href="#/documentos">Cancelar</a>' : '') + '</div></form></section>';
@@ -563,12 +552,12 @@
     var lista = DB.notificaciones.filter(function (n) { return n.usuario === u.id; }).sort(function (a, b) { return a.fecha < b.fecha ? 1 : (a.fecha > b.fecha ? -1 : b.id - a.id); });
     var n = lista.filter(function (x) { return !x.leida; }).length;
     var icono = function (t) { return /alendario|Evento|fecha/.test(t) ? 'calendario' : (/ráctica/.test(t) ? 'check_circulo' : (/emestre/.test(t) ? 'birrete' : (/ocumento/.test(t) ? 'documento' : 'campana'))); };
-    return layout('Notificaciones', 'notificaciones', '<div style="max-width:760px"><div class="tarjeta-titulo"><p class="tenue" style="margin:0">' + (n ? 'Tenés ' + n + ' sin leer.' : 'Estás al día.') + ' En la versión completa los avisos también llegan a <strong>' + e(u.email) + '</strong>.</p>' +
+    return layout('Notificaciones', 'notificaciones', '<div style="max-width:760px"><div class="tarjeta-titulo"><p class="tenue" style="margin:0">' + (n ? 'Tenés ' + n + ' sin leer.' : 'Estás al día.') + '</p>' +
       (n ? '<form data-accion="leer-todas"><button class="btn btn-suave btn-chico" type="submit">' + ico('check') + 'Marcar todas como leídas</button></form>' : '') + '</div>' +
       (lista.length ? '' : '<div class="tarjeta vacio">' + ico('campana') + 'Todavía no tenés notificaciones.</div>') +
       lista.map(function (x) {
         return '<article class="notif ' + (x.leida ? '' : 'nueva') + '"><div class="icono-circulo">' + ico(icono(x.titulo)) + '</div><div class="lista-cuerpo"><strong>' + e(x.titulo) + '</strong><p style="margin:2px 0 4px">' + e(x.mensaje) + '</p><small>' + hace(x.fecha) + '</small>' +
-          '<div class="canales"><span class="etiqueta-estado e-exito">' + ico('campana') + 'Plataforma</span><span class="etiqueta-estado e-neutro">' + ico('correo') + 'Correo (versión completa)</span></div></div>' +
+          '</div>' +
           (x.enlace ? '<button class="btn-icono" type="button" data-abrir-notif="' + x.id + '" aria-label="Abrir">' + ico('flecha_der') + '</button>' : '') + '</article>';
       }).join('') + '</div>');
   };
@@ -757,12 +746,12 @@
       if (!id) DB.documentos.push(doc);
       var msg = '';
       if (dataUrl && d.notificar) msg = notificar(estudiantes().filter(function (s) { return s.activo; }).map(function (s) { return s.id; }), 'Documento actualizado', '«' + doc.titulo + '» (versión ' + doc.version + ') ya está disponible para consulta.', '#/documentos?cat=' + doc.categoria);
-      if (!guardar()) { doc.archivo = null; flash('error', 'El navegador no tiene espacio para guardar ese PDF. Probá con uno más liviano.'); }
+      if (!guardar()) { doc.archivo = null; flash('error', 'No se pudo guardar ese PDF. Probá con uno más liviano.'); }
       else flash('exito', 'Documento guardado.' + msg);
       ir('#/documentos?cat=' + doc.categoria);
     };
     if (!file) return terminar(null);
-    if (file.size > 2 * 1024 * 1024) { flash('error', 'En la demo el PDF puede pesar hasta 2 MB.'); return render(); }
+    if (file.size > 2 * 1024 * 1024) { flash('error', 'El PDF puede pesar hasta 2 MB.'); return render(); }
     var lector = new FileReader();
     lector.onload = function () {
       if (String(lector.result).indexOf('data:application/pdf') !== 0) { flash('error', 'El archivo debe ser un PDF.'); return render(); }
@@ -801,7 +790,7 @@
     for (var n = 1; n <= sem; n++) DB.avance.push({ id: nuevoId(DB.avance), est: id, sem: n, estado: n < sem ? 'aprobado' : 'cursando', fecha: n < sem ? hoyISO() : null });
     DB.prereq.push({ est: id, bio: !!d.bio, fbio: d.bio ? hoyISO() : null, den: !!d.den, fden: d.den ? hoyISO() : null });
     notificar([id], 'Bienvenida a la plataforma', 'Tu cuenta fue creada. Ya podés consultar tu Libreta Digital de Prácticas, el calendario y los documentos de la carrera.', '#/inicio');
-    guardar(); flash('exito', 'Estudiante creado. Usuario: ' + d.email.trim().toLowerCase() + ' · contraseña temporal: ' + d.clave);
+    guardar(); flash('exito', 'Estudiante creado. Entregale su usuario (' + d.email.trim().toLowerCase() + ') y la contraseña temporal.');
     ir('#/admin/estudiante?id=' + id);
   };
   A['est-requisitos'] = function (d) {
