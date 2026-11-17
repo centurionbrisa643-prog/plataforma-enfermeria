@@ -44,7 +44,7 @@ layout_inicio('Mi perfil', 'perfil'); ?>
         <div class="lista-cuerpo"><strong>Curso de bioseguridad</strong><small>Requisito institucional</small></div>
         <?= $est['bioseguridad_aprobado'] ? '<span class="etiqueta-estado e-exito">' . icono('check') . 'Aprobado</span>' : '<span class="etiqueta-estado e-alerta">Pendiente</span>' ?></li>
       <li><div class="icono-circulo <?= $est['deners_habilitado'] ? 'hecho' : '' ?>"><?= icono('escudo') ?></div>
-        <div class="lista-cuerpo"><strong>Habilitación DENERS</strong><small>Dirección Nacional de Recursos Humanos en Salud</small></div>
+        <div class="lista-cuerpo"><strong>Habilitación DENERS</strong><small>Requisito para realizar prácticas</small></div>
         <?= $est['deners_habilitado'] ? '<span class="etiqueta-estado e-exito">' . icono('check') . 'Habilitado</span>' : '<span class="etiqueta-estado e-alerta">Pendiente</span>' ?></li>
     </ul>
     <h3 style="margin-top:18px">Mi avance</h3>

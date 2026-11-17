@@ -570,7 +570,7 @@
       var pr = prereqDe(u.id);
       extra = '<section class="tarjeta" id="requisitos"><h3>Requisitos para prácticas</h3><ul class="lista">' +
         '<li><div class="icono-circulo ' + (pr.bio ? 'hecho' : '') + '">' + ico('escudo_check') + '</div><div class="lista-cuerpo"><strong>Curso de bioseguridad</strong><small>Requisito institucional</small></div>' + etiquetaSiNo(pr.bio, 'Aprobado') + '</li>' +
-        '<li><div class="icono-circulo ' + (pr.den ? 'hecho' : '') + '">' + ico('escudo') + '</div><div class="lista-cuerpo"><strong>Habilitación DENERS</strong><small>Dirección Nacional de Recursos Humanos en Salud</small></div>' + etiquetaSiNo(pr.den, 'Habilitado') + '</li></ul>' +
+        '<li><div class="icono-circulo ' + (pr.den ? 'hecho' : '') + '">' + ico('escudo') + '</div><div class="lista-cuerpo"><strong>Habilitación DENERS</strong><small>Requisito para realizar prácticas</small></div>' + etiquetaSiNo(pr.den, 'Habilitado') + '</li></ul>' +
         '<h3 style="margin-top:18px">Mi avance</h3><ul class="lista">' + avanceDe(u.id).map(function (a) {
           return '<li><div class="icono-circulo ' + (a.estado === 'aprobado' ? 'hecho' : '') + '">' + ico(a.estado === 'aprobado' ? 'check' : 'reloj') + '</div><div class="lista-cuerpo"><strong>' + a.sem + '.º semestre</strong><small>' + (a.estado === 'aprobado' ? 'Aprobado el ' + fechaCorta(a.fecha) : 'En curso') + '</small></div></li>';
         }).join('') + '</ul></section>';
