@@ -1,124 +1,148 @@
 # Plataforma Académica · Carrera de Enfermería (UniNorte)
 
-Libreta Digital de Prácticas, calendario, documentos y notificaciones dobles.
-**Tecnologías:** PostgreSQL + PgAdmin 4 · PHP 8.1 o superior · HTML/CSS/JS · Visual Studio Code (Windows)
+Plataforma web para la Carrera de Enfermería de la Universidad del Norte: **Libreta Digital de Prácticas**, calendario académico con avisos, documentos de consulta (reglamentos, manuales PAE, guías y protocolos) y seguimiento del avance de cada estudiante.
+
+Funciona en computadora y celular, con **modo claro y oscuro**.
+
+> Proyecto integrador · Ingeniería Informática · Universidad del Norte · Grupo 04
+
+![Panel de Coordinación](docs/capturas/escritorio-admin.png)
+
+| Celular | Libreta en modo oscuro |
+|---|---|
+| ![Vista en celular](docs/capturas/movil.png) | ![Libreta en modo oscuro](docs/capturas/libreta-oscuro.png) |
 
 ---
 
-## 1. Instalar lo necesario (una sola vez)
+## Funcionalidades
 
-| Programa | Dónde | Nota |
-|---|---|---|
-| **PostgreSQL** (trae PgAdmin 4) | postgresql.org/download/windows | Anotá la contraseña del usuario `postgres` |
-| **PHP 8.2 o superior** | windows.php.net/download → *VS17 x64 Thread Safe* (zip) | Descomprimir en `C:\php` |
-| **Visual Studio Code** | code.visualstudio.com | Extensión recomendada: *PHP Intelephense* |
+### Estudiante
+- **Mi Libreta:** consulta de los procedimientos de cada semestre, organizados por área, con sus pasos numerados.
+- Ve cuáles prácticas ya fueron **realizadas** (fecha e instructor que firmó) y su porcentaje de avance.
+- Solo ve los semestres habilitados: el siguiente se abre cuando aprueba el actual.
+- Estado de sus requisitos: **curso de bioseguridad** y **habilitación DENERS**.
+- Calendario de parciales, finales, prácticas y actividades.
+- Documentos de consulta: reglamentos, manuales PAE, guías y protocolos de bioseguridad.
+- Notificaciones dentro de la plataforma y por correo.
 
-### Configurar PHP
-1. En `C:\php`, copiá `php.ini-development` y renombrala a `php.ini`.
-2. Abrí `php.ini` y quitá el `;` del inicio de estas líneas:
-   ```ini
-   extension_dir = "ext"
-   extension=pdo_pgsql
-   extension=pgsql
-   extension=openssl
-   extension=mbstring
-   ```
-3. Agregá `C:\php` al **PATH** de Windows (Buscar → "variables de entorno" → Path → Nuevo).
-4. En una terminal nueva comprobá: `php -v` y `php -m` (debe aparecer `pdo_pgsql`).
+### Administrador (Dirección y Coordinación de Prácticas)
+- Alta y gestión de estudiantes por **sede, turno y semestre**.
+- Marca los requisitos (bioseguridad y DENERS); sin ellos no se pueden registrar prácticas.
+- **Aprueba el semestre** y el sistema habilita el siguiente automáticamente.
+- Registra cada práctica que el instructor **firmó en la libreta física** (y puede anularla si hubo un error).
+- Carga los procedimientos de la libreta por semestre y área.
+- Crea, modifica y cancela eventos del calendario; los estudiantes alcanzados reciben el aviso.
+- Sube documentos en PDF y avisa a los estudiantes.
+- Reenvío de correos pendientes.
 
-> ¿Usás XAMPP? Funciona igual: activá `extension=pdo_pgsql` y `extension=pgsql` en `C:\xampp\php\php.ini`.
+### Notificación doble
+Cada aviso queda en la plataforma (campanita) y se envía por correo. Si el correo falla, queda pendiente y se reintenta.
 
-## 2. Crear la base de datos en PgAdmin 4
-1. Abrí PgAdmin 4 → *Servers* → *PostgreSQL* → clic derecho en **Databases** → *Create* → *Database…*
-2. Nombre: `enfermeria_db` → *Save*.
-3. Clic derecho en `enfermeria_db` → **Query Tool**.
-4. Abrí el archivo `sql/enfermeria_db.sql` (ícono de carpeta) y ejecutalo con **F5**.
-5. Verificá: en *Schemas → public → Tables* deben aparecer 11 tablas y la vista `v_estudiantes`.
+---
 
-> El script se puede volver a ejecutar cuando quieras: borra todo y carga los datos de prueba de nuevo.
+## Tecnologías
 
-## 3. Abrir el proyecto en VS Code
-1. *Archivo → Abrir carpeta…* → `plataforma-enfermeria`.
-2. En `config/config.php` cambiá `DB_PASS` por tu contraseña de PostgreSQL.
-3. Abrí la terminal de VS Code (**Ctrl + ñ**) y ejecutá:
+| Capa | Tecnología |
+|---|---|
+| Base de datos | PostgreSQL (administrada con pgAdmin 4) |
+| Servidor | PHP 8.0 o superior, PDO |
+| Interfaz | HTML, CSS y JavaScript (sin frameworks), diseño adaptable |
+| Correo | Cliente SMTP propio (`includes/smtp.php`), sin Composer |
+
+---
+
+## Instalación en Windows
+
+### 1. Requisitos
+- **PostgreSQL** (incluye pgAdmin 4).
+- **PHP 8.0 o superior.** Sirve el de **XAMPP** (`C:\xampp\php`).
+- **Visual Studio Code** (opcional, para editar).
+
+### 2. Descargar
+Botón verde **Code → Download ZIP** y descomprimir, o:
+```bash
+git clone https://github.com/centurionbrisa643-prog/plataforma-enfermeria.git
+```
+
+### 3. Iniciar (forma rápida, con XAMPP)
+Doble clic en **`1-iniciar.bat`** y escribir la contraseña de PostgreSQL.
+El script crea la base `enfermeria_db` con datos de ejemplo la primera vez y abre **http://localhost:8000**.
+No cerrar la ventana negra mientras se usa la página.
+
+### 3-bis. Iniciar (forma manual)
+1. En pgAdmin 4: crear la base `enfermeria_db` → Query Tool → abrir `sql/enfermeria_db.sql` → **F5**.
+2. En `config/config.php`, poner la contraseña de PostgreSQL en `DB_PASS`.
+3. En `php.ini`, activar `extension=pdo_pgsql` y `extension=pgsql`.
+4. En la carpeta del proyecto:
    ```bash
    php -S localhost:8000 router.php
    ```
-4. Entrá a **http://localhost:8000** en el navegador.
-   Para verla desde el celular (misma red Wi-Fi): `php -S 0.0.0.0:8000 router.php` y abrí `http://IP-de-tu-PC:8000`.
+5. Abrir **http://localhost:8000**.
 
-## 4. Usuarios de prueba
+> Volver a ejecutar `sql/enfermeria_db.sql` borra todo y deja los datos de ejemplo limpios.
+
+---
+
+## Usuarios de prueba
 
 | Rol | Correo | Contraseña |
 |---|---|---|
 | Administrador (Dirección) | direccion@enfermeria.test | Admin2026! |
 | Administrador (Coordinación de Prácticas) | coordinacion@enfermeria.test | Admin2026! |
-| Estudiante (3.º sem., habilitada) | ana.benitez@enfermeria.test | Estudiante2026! |
-| Estudiante (1.º sem., sin DENERS) | luis.gimenez@enfermeria.test | Estudiante2026! |
+| Estudiante · 3.º semestre, habilitada | ana.benitez@enfermeria.test | Estudiante2026! |
+| Estudiante · 1.º semestre, sin DENERS | luis.gimenez@enfermeria.test | Estudiante2026! |
 
-Los procedimientos y documentos cargados son **ejemplos**. El contenido oficial se carga
-después de la visita técnica (pendiente del Acta N.º 01).
+Son cuentas de demostración de la base local. Los procedimientos y documentos cargados son ejemplos.
 
-## 5. Activar el envío de correos (notificación doble)
-Mientras no se configure, los avisos se ven en la plataforma y los correos quedan **pendientes**.
+---
 
-1. Con una cuenta de Gmail: activá la verificación en 2 pasos y creá una
-   **Contraseña de aplicación** (Cuenta de Google → Seguridad → Contraseñas de aplicaciones).
-2. En `config/config.php`:
-   ```php
-   define('SMTP_HABILITADO', true);
-   define('SMTP_USUARIO', 'tu.cuenta@gmail.com');
-   define('SMTP_CLAVE', 'xxxx xxxx xxxx xxxx');   // la contraseña de aplicación
-   define('SMTP_REMITENTE', 'tu.cuenta@gmail.com');
-   ```
-3. PHP en Windows necesita los certificados para conectarse con TLS: descargá `cacert.pem`
-   de **curl.se/docs/caextract.html**, guardalo en `C:\php\extras\ssl\cacert.pem` y en `php.ini` poné:
-   ```ini
-   openssl.cafile = "C:\php\extras\ssl\cacert.pem"
-   ```
-4. Los pendientes se envían con el botón **"Enviar correos pendientes"** (Inicio del admin) o con
-   `php tareas/enviar_correos.php` (se puede programar en el Programador de tareas de Windows).
+## Usar la app desde el celular u otra computadora
 
-No se usa Composer: el envío SMTP está en `includes/smtp.php`.
+| Archivo | Para qué |
+|---|---|
+| `1-iniciar.bat` | Usar la página solo en la PC: http://localhost:8000 |
+| `2-compartir-wifi.bat` | Abrirla en un celular conectado al **mismo Wi-Fi** (muestra la dirección, p. ej. `http://192.168.1.25:8000`) |
+| `3-compartir-internet.bat` | Genera un **link público** `https://….trycloudflare.com` para usarla desde cualquier lugar. Queda copiado y guardado en `link-para-compartir.txt` |
 
-## 6. Estructura
+- Abrir uno a la vez.
+- El link público funciona mientras la PC esté prendida con esa ventana abierta, y cambia cada vez que se abre.
+
+---
+
+## Envío de correos
+
+Mientras no se configure, los avisos se ven en la plataforma y los correos quedan pendientes.
+
+1. En `config/config.php`: `SMTP_HABILITADO = true` y los datos de la cuenta (con Gmail, usar una **contraseña de aplicación**).
+2. PHP en Windows necesita certificados: descargar `cacert.pem` de curl.se y en `php.ini` poner `openssl.cafile = "C:\ruta\cacert.pem"`.
+3. Los pendientes se envían desde el botón **"Enviar correos pendientes"** (Inicio del administrador) o con `php tareas/enviar_correos.php`.
+
+---
+
+## Estructura
 
 ```
 plataforma-enfermeria/
-├── sql/enfermeria_db.sql      ← script para PgAdmin 4
+├── sql/enfermeria_db.sql      ← base de datos y datos de ejemplo
 ├── config/config.php          ← conexión a PostgreSQL y correo
 ├── includes/                  ← conexión, sesión, roles, notificaciones, diseño
-├── assets/ (css, js, img)     ← estilos verde olivo/militar/musgo, modo oscuro, logo
+├── assets/                    ← estilos, scripts y logo
 ├── admin/                     ← estudiantes, ficha del estudiante, procedimientos
 ├── login.php  inicio.php  libreta.php  procedimiento.php
 ├── calendario.php  documentos.php  notificaciones.php  perfil.php
 ├── storage/documentos/        ← PDFs subidos (no accesibles directamente)
 ├── tareas/enviar_correos.php  ← reintento de correos
-└── router.php                 ← para el servidor de desarrollo de PHP
+├── docs/capturas/             ← imágenes de este README
+├── router.php                 ← servidor de desarrollo de PHP
+└── *.bat                      ← arranque rápido en Windows
 ```
 
-## 7. Trazabilidad con las fuentes del proyecto
+---
 
-| Funcionalidad | Origen |
-|---|---|
-| Libreta Digital de Prácticas | F01 (correo) |
-| Libreta **solo de consulta**; el estudiante no carga datos; firma física del instructor | F02 (Acta N.º 01) |
-| Correcciones de errores en forma presencial (no hay módulo de correcciones) | F02 |
-| Roles: Dirección y Coordinación de Prácticas = Administrador | F02 |
-| Semestres, turnos (mañana/tarde/noche) y avance progresivo | F02 |
-| El semestre siguiente se ve solo si aprobó el actual | F02 |
-| Prerrequisitos: curso de bioseguridad + habilitación DENERS | F02 |
-| Calendario con parciales, finales y avisos de cambios | F01 + F02 |
-| Usuario y contraseña; ~150 estudiantes por sede | F02 |
-| Reglamentos, manuales PAE, guías y protocolos de bioseguridad | F01 |
-| Notificación **doble** (plataforma + correo) | Decisión del grupo |
-| El **admin** marca la aprobación del semestre | Decisión del grupo |
-| El **admin** registra en el sistema la práctica firmada en papel | Decisión del grupo |
-| Sistema HIS | Fuera de alcance (solo referencia, F02) |
-| Lista de Cotejo y Horas de Extensión | F01, no tratados en F02 → versión 2 |
+## Seguridad
 
-Las decisiones del grupo deben registrarse como **CAM-xx** y validarse con la Dirección en la visita técnica.
-
-## 8. Seguridad incluida
-Contraseñas con `password_hash` (bcrypt) · consultas preparadas (PDO) · protección CSRF en formularios ·
-bloqueo tras 5 intentos fallidos · control de rol en cada página · PDFs servidos solo con sesión iniciada.
+- Contraseñas encriptadas (bcrypt) y control de perfil en cada página.
+- Consultas preparadas (PDO) contra inyección SQL.
+- Protección CSRF en todos los formularios.
+- Bloqueo de un minuto tras 5 intentos fallidos de ingreso.
+- Los PDF solo se entregan a usuarios con sesión iniciada.
